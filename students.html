@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Section</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="simple-page">
+  <h1>Select Your Details</h1>
+
+  <label>Choose Section:</label>
+  <select id="section">
+    <option value="">--Select--</option>
+    <option value="A">Section A</option>
+    <option value="B">Section B</option>
+  </select>
+
+  <br><br>
+
+  <label>Select Roll Number:</label>
+  <select id="roll"></select>
+
+  <br><br>
+
+  <button onclick="showName()">Show Invitation</button>
+
+  <h2 id="greet"></h2>
+
+  <a class="back-btn" href="index.html">← Back to Home</a>
+</div>
+
+<script>
+const studentsA = {
+  1: "Sunita",
+  2: "Rajesh",
+  3: "Divya"
+};
+
+const studentsB = {
+  1: "Amit",
+  2: "Priya",
+  3: "Karan"
+};
+
+document.getElementById("section").onchange = function() {
+  const sec = this.value;
+  const rollSelect = document.getElementById("roll");
+  rollSelect.innerHTML = "";
+  let list = sec === "A" ? studentsA : studentsB;
+
+  for (let r in list) {
+    rollSelect.innerHTML += `<option value="${r}">${r}</option>`;
+  }
+};
+
+function showName() {
+  const sec = document.getElementById("section").value;
+  const roll = document.getElementById("roll").value;
+  const name = sec === "A" ? studentsA[roll] : studentsB[roll];
+  document.getElementById("greet").innerText = "Welcome " + name + "!";
+}
+</script>
+
+</body>
+</html>
