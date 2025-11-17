@@ -1,65 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Section</title>
-  <link rel="stylesheet" href="styles.css">
+    <title>Student | Farewell Invitation</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div class="simple-page">
-  <h1>Select Your Details</h1>
+<!-- WAVY BACKGROUND (same as homepage) -->
+<div id="wave-bg">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>
 
-  <label>Choose Section:</label>
-  <select id="section">
-    <option value="">--Select--</option>
-    <option value="A">Section A</option>
-    <option value="B">Section B</option>
-  </select>
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="brand">Farewell 2025</div>
+    <div class="nav">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="credits.html">Credits</a>
+    </div>
+</div>
 
-  <br><br>
+<div class="page-box">
 
-  <label>Select Roll Number:</label>
-  <select id="roll"></select>
+    <h2>Select Your Section</h2>
+    <select id="sectionSelect" onchange="loadRolls()">
+        <option value="">-- Choose Section --</option>
+        <option value="A">Section A</option>
+        <option value="B">Section B</option>
+    </select>
 
-  <br><br>
+    <br><br>
 
-  <button onclick="showName()">Show Invitation</button>
+    <div id="rollDiv" style="display:none;">
+        <h3>Select Roll Number</h3>
+        <select id="rollSelect" onchange="showInvitation()"></select>
+    </div>
 
-  <h2 id="greet"></h2>
+    <br><br>
 
-  <a class="back-btn" href="index.html">← Back to Home</a>
+    <div id="inviteCard" style="display:none; padding:20px; background:rgba(255,255,255,0.06); border-radius:16px; border:1px solid rgba(255,255,255,0.15);">
+        <h2 id="studentName"></h2>
+        <p id="personalMsg" style="margin-top:10px; font-size:1.05rem;"></p>
+    </div>
+
 </div>
 
 <script>
-const studentsA = {
-  1: "Sunita",
-  2: "Rajesh",
-  3: "Divya"
-};
+/* --------------------------
+   STUDENT LIST + MESSAGES
+--------------------------- */
 
-const studentsB = {
-  1: "Amit",
-  2: "Priya",
-  3: "Karan"
-};
+const students = {
+  A: {
+    1: { name: "Aarav Sharma", msg: "You brought strength and calmness to the class. Wishing you a bright future ahead!" },
+    2: { name: "Ananya Das", msg: "Your creativity always stood out. Keep shining everywhere you go!" },
+    3: { name: "Rohan Patel", msg: "Your humour made every moment memorable. Best wishes!" },
+    4: { name: "Diya Sen", msg: "Your kindness touched everyone. May life bring you joy!" },
+    5: { name: "Satyam Roy", msg: "Hardworking and humble—you're made for greatness!" },
+    6: { name: "Prisha Mehta", msg: "Your elegance and grace always inspired others. Keep rising!" },
+    7: { name: "Arjun Singh", msg: "Bold and confident—your future is full of success!" },
+    8: { name: "Kritika Bose", msg: "Your smile lit up the classroom. Keep spreading happiness!" },
+    9: { name: "Rahul Banerjee", msg: "Your dedication will take you far. Keep going strong!" },
+    10: { name: "Tanya Dutta", msg: "Soft-hearted and brilliant—wishing you the best life offers!" },
+    11: { name: "Vikram Sahu", msg: "A leader in silence—you inspire more than you know!" },
+    12: { name: "Sneha Das", msg: "Your kindness made you truly unforgettable. Shine on!" },
+    13: { name: "Krish Malhotra", msg: "Your energy brought life to every moment. Best wishes!" },
+    14: { name: "Sanya Mishra", msg: "Calm, composed and elegant—wishing you great success!" },
+    15: { name: "Harsh Verma", msg: "Always helpful and honest—keep being amazing!" }
+  },
 
-document.getElementById("section").onchange = function() {
-  const sec = this.value;
-  const rollSelect = document.getElementById("roll");
-  rollSelect.innerHTML = "";
-  let list = sec === "A" ? studentsA : studentsB;
-
-  for (let r in list) {
-    rollSelect.innerHTML += `<option value="${r}">${r}</option>`;
+  B: {
+    1: { name: "Ishaan Gupta", msg: "A thinker with big dreams—may all of them come true!" },
+    2: { name: "Maya Nair", msg: "Soft-spoken yet powerful—wishing you a beautiful journey ahead!" },
+    3: { name: "Aditi Ghosh", msg: "Your positivity brightened everyone's day. Keep glowing!" },
+    4: { name: "Kabir Chatterjee", msg: "Cool, calm and confident—success will follow you!" },
+    5: { name: "Rehan Khan", msg: "Your charm and confidence made you unforgettable!" },
+    6: { name: "Sara Fernandes", msg: "Graceful and intelligent—keep blooming beautifully!" },
+    7: { name: "Devraj Soni", msg: "You made every moment fun—best wishes ahead!" },
+    8: { name: "Mehul Jain", msg: "Focused and determined—you're destined for great things!" },
+    9: { name: "Pooja Sethi", msg: "Gentle soul with a bright mind—keep shining!" },
+    10: { name: "Tanvi Kapoor", msg: "Creative and brilliant—your journey will be magical!" },
+    11: { name: "Yash Agarwal", msg: "Your discipline and hard work set an example for all!" },
+    12: { name: "Neha Barman", msg: "Kind-hearted and elegant—wishing you the best!" },
+    13: { name: "Omkar Rao", msg: "Energetic and enthusiastic—success will chase you!" },
+    14: { name: "Meera Joshi", msg: "Warm, polite and brilliant—your future is golden!" },
+    15: { name: "Ritika Paul", msg: "Your laughter made the class brighter—best of luck!" }
   }
 };
 
-function showName() {
-  const sec = document.getElementById("section").value;
-  const roll = document.getElementById("roll").value;
-  const name = sec === "A" ? studentsA[roll] : studentsB[roll];
-  document.getElementById("greet").innerText = "Welcome " + name + "!";
+/* -------------------------- */
+/* LOAD ROLL NUMBERS */
+/* -------------------------- */
+function loadRolls() {
+    const section = document.getElementById("sectionSelect").value;
+    const rollSelect = document.getElementById("rollSelect");
+    const rollDiv = document.getElementById("rollDiv");
+
+    if (!section) { rollDiv.style.display = "none"; return; }
+
+    rollSelect.innerHTML = "<option value=''>-- Select Roll Number --</option>";
+
+    Object.keys(students[section]).forEach(roll => {
+        rollSelect.innerHTML += `<option value="${roll}">${roll}</option>`;
+    });
+
+    rollDiv.style.display = "block";
+}
+
+/* -------------------------- */
+/* SHOW INVITATION */
+/* -------------------------- */
+function showInvitation() {
+    const section = document.getElementById("sectionSelect").value;
+    const roll = document.getElementById("rollSelect").value;
+
+    if (!section || !roll) return;
+
+    const data = students[section][roll];
+
+    document.getElementById("studentName").innerHTML = "Welcome, " + data.name + "!";
+    document.getElementById("personalMsg").innerHTML = data.msg;
+
+    document.getElementById("inviteCard").style.display = "block";
 }
 </script>
 
